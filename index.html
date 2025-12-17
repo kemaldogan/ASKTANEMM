@@ -3,392 +3,97 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Geri Sayım</title>
+  <title>Aşk Tanem</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: radial-gradient(circle at bottom, #020111, #000000 70%);
-      font-family: 'Segoe UI', sans-serif;
-      color: #fff;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    canvas#stars { position: fixed; inset: 0; z-index: 0; }
-
-    .box {
-      position: relative;
-      z-index: 2;
-      background: rgba(255,255,255,0.08);
-      padding: 40px 50px;
-      border-radius: 24px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-      max-width: 420px;
-      width: 90%;
-    }
-
-    h1 { font-size: 1.8rem; margin: 0 0 16px; }
-    #countdown { font-size: 2.4rem; font-weight: 700; margin: 18px 0 0; }
-
-    input, button {
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: none;
-      font-size: 1rem;
-      margin-top: 10px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    button { cursor: pointer; background: #00c6ff; color: #000; font-weight: 700; }
-    button:hover { opacity: 0.95; }
-
-    .hidden { display: none; }
-
-    /* AŞK MEKTUBU */
-    #letter {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,0,0.6);
-      z-index: 3;
-      animation: fadeIn 1.2s ease forwards;
-      padding: 18px;
-      box-sizing: border-box;
-    }
-
-    #letter .paper {
-      background: #fff;
-      color: #000;
-      padding: 40px;
-      border-radius: 16px;
-      max-width: 520px;
-      width: 100%;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      animation: floatUp 1.2s ease forwards;
-      position: relative;
-      overflow: hidden;
-      text-align: left;
-    }
-
-    #typedText {
-      white-space: pre-wrap; /* \n satırlarını göster */
-    }
-
-    #typedText::after { content: '|'; animation: blink 1s infinite; }
-
-    @keyframes blink { 50% { opacity: 0; } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes floatUp { from { transform: translateY(34px); } to { transform: translateY(0); } }
-
-    /* KALPLER */
-    .heart {
-      position: absolute;
-      bottom: -22px;
-      animation: fly 4s linear forwards;
-      opacity: 0.85;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    @keyframes fly {
-      to { transform: translateY(-120vh) translateX(40px); opacity: 0; }
-    }
-
-    /* FİNAL */
-    #finalScreen {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      font-size: 3.2rem;
-      font-weight: 800;
-      z-index: 5;
-      animation: fadeIn 1.8s forwards;
-      padding: 24px;
-      box-sizing: border-box;
-      text-align: center;
-    }
-
-    /* Autoplay engellenirse görünen buton */
-    #musicBtn {
-      margin-top: 12px;
-      background: #fff;
-      color: #000;
-    }
-
-    .hint { opacity: 0.85; font-size: 0.95rem; margin-top: 10px; }
+    body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#000;color:#fff;font-family:Segoe UI,system-ui;overflow:hidden}
+    canvas{position:fixed;inset:0}
+    .box{position:relative;z-index:2;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);padding:32px;border-radius:20px;width:90%;max-width:420px;text-align:center}
+    input,button{width:100%;padding:12px;border-radius:12px;border:none;font-size:1rem;margin-top:10px}
+    button{background:#00c6ff;font-weight:700;cursor:pointer}
+    .hidden{display:none}
+    #countdown{font-size:2rem;margin-top:12px}
+    #letter{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:3}
+    #paper{background:#fff;color:#000;padding:32px;border-radius:16px;max-width:520px;width:90%;white-space:pre-wrap}
+    #final{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;font-size:3rem;font-weight:800;z-index:5}
+    .heart{position:absolute;bottom:-20px;animation:fly 4s linear forwards}
+    @keyframes fly{to{transform:translateY(-120vh);opacity:0}}
   </style>
 </head>
 <body>
-  <canvas id="stars"></canvas>
+<canvas id="stars"></canvas>
 
-  <div class="box">
-    <h1>Önce küçük bir kontrol 👀</h1>
+<div class="box" id="login">
+  <h2>Şifre</h2>
+  <input id="pwd" type="password" placeholder="Şifreyi gir" />
+  <button id="enter">Devam et</button>
+</div>
 
-    <div id="passwordBox">
-      <input type="password" id="passwordInput" placeholder="Şifreyi gir" />
-      <button id="enterBtn" type="button">Devam et</button>
-      <div class="hint">Doğru şifre + doğru zaman = sürpriz</div>
-    </div>
+<div class="box hidden" id="countBox">
+  <h2>Hazır ol… ⏳</h2>
+  <div id="countdown"></div>
+</div>
 
-    <div id="countdownBox" class="hidden">
-      <h1>Hazır ol… ⏳</h1>
-      <div id="countdown">00:00:00</div>
-      <button id="musicBtn" class="hidden" type="button">Müziği Başlat 🎵</button>
-      <div class="hint" id="musicHint" style="display:none;">Tarayıcı otomatik müziği engelledi — butona dokun 😅</div>
-    </div>
-  </div>
+<audio id="music" loop>
+  <source src="lady-gaga-paparazzi.mp3" type="audio/mpeg">
+</audio>
 
-  <!-- Telif nedeniyle MP3 dosyasını repo'ya sen koymalısın -->
-  <audio id="bgMusic" loop preload="auto">
-    <source src="lady-gaga-paparazzi.mp3" type="audio/mpeg" />
-  </audio>
+<script>
+/* ==== AYARLAR ==== */
+const PASSWORD = "Seloş123.";
+const TARGET = new Date("2025-12-17T21:20:00").getTime();
+const TEXT = `Canımın içi,\n\nBu yıl benim hayatıma giren en değerli insansın. Ne kadar komik ocak ayında senden bihaberken şu anda sensiz bir gelecek hayal edemiyorum. 2026 yılı bizim yılımız olacak, tüm hedeflerimize birlikte ulaşalım.\n\nSeni çoooooooooooooooook seviyorum AŞK TANEM :)))`;
+const FINAL = "İYİ Kİ VARSIN AŞK TANEM :)))";
 
-  <script>
-    /* ================= AYARLAR ================= */
-    const correctPassword = "Seloş123.";
-    const targetDate = new Date("2025-12-17T21:17:00").getTime();
+/* ==== ELEMENTLER ==== */
+const login = document.getElementById('login');
+const countBox = document.getElementById('countBox');
+const pwd = document.getElementById('pwd');
+const enter = document.getElementById('enter');
+const countdown = document.getElementById('countdown');
+const music = document.getElementById('music');
 
-    const text = `Canımın içi,\n\nBu yıl benim hayatıma giren en değerli insansın. Ne kadar komik ocak ayında senden bihaberken şu anda sensiz bir gelecek hayal edemiyorum. 2026 yılı bizim yılımız olacak, tüm hedeflerimize, hayallerimize birlikte ulaştığımız, birbirimizi hep en ileriye taşıdığımız bir yıl olsun. Bu yıl Noel babadan bir dileğim yok çünkü zaten en büyük dileğim artık hayatımda.\n\nSeni çoooooooooooooooook seviyorum AŞK TANEM :)))`;
+let started = false;
 
-    const finalSentence = "İYİ Kİ VARSIN AŞK TANEM :)))";
+/* ==== STARS ==== */
+const c=document.getElementById('stars'),x=c.getContext('2d');
+function resize(){c.width=innerWidth;c.height=innerHeight}
+addEventListener('resize',resize);resize();
+const stars=[...Array(120)].map(()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.5}));
+(function draw(){x.clearRect(0,0,c.width,c.height);x.fillStyle='white';stars.forEach(s=>{x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fill()});requestAnimationFrame(draw)})();
 
-    /* ================= ELEMENTLER ================= */
-    const passwordBox = document.getElementById("passwordBox");
-    const countdownBox = document.getElementById("countdownBox");
-    const passwordInput = document.getElementById("passwordInput");
-    const enterBtn = document.getElementById("enterBtn");
-    const countdownEl = document.getElementById("countdown");
-    const musicBtn = document.getElementById("musicBtn");
-    const musicHint = document.getElementById("musicHint");
+/* ==== LOGIN ==== */
+enter.onclick=()=>{
+  if(pwd.value!==PASSWORD){alert('Şifre yanlış');return}
+  login.classList.add('hidden');
+  countBox.classList.remove('hidden');
+  music.play().catch(()=>{}); // kullanıcı etkileşimi => izin
+  if(Date.now()>=TARGET) startFinal();
+};
 
-    const audio = document.getElementById("bgMusic");
-    let audioUnlocked = false;
+/* ==== COUNTDOWN ==== */
+setInterval(()=>{
+  const d=TARGET-Date.now();
+  if(d<=0){countdown.textContent='00:00:00';startFinal();return}
+  const h=Math.floor(d/36e5),m=Math.floor(d%36e5/6e4),s=Math.floor(d%6e4/1e3);
+  countdown.textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
+},1000);
 
-    /* ================= SES (AUTOPLAY) ================= */
-    function unlockAudio() {
-      if (audioUnlocked) return;
-      // Kullanıcı tıklaması anında play/pause => sonraki play denemeleri daha stabil olur.
-      audio.muted = true;
-      const p = audio.play();
-      if (p && typeof p.then === 'function') {
-        p.then(() => {
-          audio.pause();
-          audio.currentTime = 0;
-          audio.muted = false;
-          audioUnlocked = true;
-        }).catch(() => {
-          audio.muted = false;
-        });
-      } else {
-        // Eski tarayıcı fallback
-        try { audio.pause(); } catch (_) {}
-        audio.currentTime = 0;
-        audio.muted = false;
-        audioUnlocked = true;
-      }
-    }
+/* ==== FINAL ==== */
+function startFinal(){
+  if(started) return; started=true;
+  music.currentTime=0; music.play().catch(()=>{});
+  const l=document.createElement('div');l.id='letter';
+  l.innerHTML=`<div id="paper"></div>`;
+  document.body.appendChild(l);
+  const p=l.querySelector('#paper');
+  let i=0;
+  const t=setInterval(()=>{p.textContent+=TEXT.charAt(i++);if(i>=TEXT.length){clearInterval(t);setTimeout(showFinal,1200)}},80);
+  setInterval(()=>{const h=document.createElement('div');h.className='heart';h.textContent='❤️';h.style.left=Math.random()*100+'%';p.appendChild(h);setTimeout(()=>h.remove(),4000)},150);
+}
 
-    async function playMusic(fromStart = true) {
-      if (fromStart) audio.currentTime = 0;
-      try {
-        await audio.play();
-        musicBtn.classList.add('hidden');
-        musicHint.style.display = 'none';
-        return true;
-      } catch (e) {
-        // Autoplay bloklandı
-        musicBtn.classList.remove('hidden');
-        musicHint.style.display = 'block';
-        return false;
-      }
-    }
-
-    musicBtn.addEventListener('click', async () => {
-      unlockAudio();
-      await playMusic(true);
-      musicBtn.classList.add('hidden');
-      musicHint.style.display = 'none';
-    });
-
-    /* ================= ŞİFRE / GİRİŞ ================= */
-    function onEnter() {
-      const input = passwordInput.value;
-      if (input !== correctPassword) {
-        alert("Şifre yanlış 😅");
-        return;
-      }
-
-      // Kullanıcı etkileşimi var => sesi unlock et
-      unlockAudio();
-
-      passwordBox.classList.add("hidden");
-      countdownBox.classList.remove("hidden");
-
-      // Eğer tarih geçtiyse (siteye günler sonra bile girse) => hemen final + müzik
-      if (Date.now() >= targetDate) {
-        startFinalSequence(true);
-      }
-    }
-
-    enterBtn.addEventListener('click', onEnter);
-    passwordInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') onEnter();
-    });
-
-    /* ================= GERİ SAYIM ================= */
-    setInterval(() => {
-      const now = Date.now();
-      const distance = targetDate - now;
-
-      if (distance <= 0) {
-        countdownEl.textContent = `00sa 00dk 00sn`;
-        // Kullanıcı zaten giriş yaptıysa final akışını başlatmayı dener
-        startFinalSequence(false);
-        return;
-      }
-
-      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const s = Math.floor((distance % (1000 * 60)) / 1000);
-      countdownEl.textContent = `${h.toString().padStart(2,'0')}sa ${m.toString().padStart(2,'0')}dk ${s.toString().padStart(2,'0')}sn`;
-    }, 1000);
-
-    /* ================= YILDIZLAR ================= */
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    window.addEventListener('resize', resize);
-    resize();
-
-    const stars = Array.from({ length: 150 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.5,
-      tw: 0.02 + Math.random() * 0.03
-    }));
-
-    (function drawStars(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      for (const s of stars) {
-        s.r += (Math.random() - 0.5) * s.tw;
-        if (s.r < 0.2) s.r = 0.2;
-        if (s.r > 1.8) s.r = 1.8;
-        ctx.beginPath();
-        ctx.fillStyle = 'white';
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-        ctx.fill();
-      }
-      requestAnimationFrame(drawStars);
-    })();
-
-    /* ================= FİNAL AKIŞ ================= */
-    let shown = false;
-    let heartsIntervalId = null;
-
-    function startFinalSequence(fromUserClick) {
-      if (shown) return;
-
-      // kullanıcı giriş yapmadan tetikleme
-      const isLoggedIn = countdownBox && !countdownBox.classList.contains('hidden');
-      if (!isLoggedIn) return;
-
-      if (Date.now() < targetDate) return;
-
-      shown = true;
-
-      // Müzik: her girişte (sayfa yenilense de) BAŞTAN çal
-      // Eğer bu fonksiyon tıklamadan gelmediyse autoplay bloklanabilir => buton gösterilecek.
-      playMusic(true);
-
-      document.body.insertAdjacentHTML('beforeend', `
-        <div id="letter">
-          <div class="paper">
-            <h2>Sevgilim,</h2>
-            <p id="typedText"></p>
-          </div>
-        </div>`);
-
-      const typedEl = document.getElementById('typedText');
-      let i = 0;
-
-      const typerId = setInterval(() => {
-        if (!typedEl) { clearInterval(typerId); return; }
-        typedEl.textContent += text.charAt(i);
-        i++;
-        if (i >= text.length) {
-          clearInterval(typerId);
-          setTimeout(showFinal, 1500);
-        }
-      }, 85);
-
-      // Kalpler: son satıra yaklaşınca hızlanır
-      const baseMs = 150;
-      const boostedMs = 90;
-      const boostAt = Math.max(0, text.length - 35);
-
-      let currentMs = baseMs;
-
-      function emitHeart() {
-        const paper = document.querySelector('#letter .paper');
-        if (!paper) return;
-        const h = document.createElement('div');
-        h.className = 'heart';
-        h.textContent = '❤️';
-        h.style.left = Math.random() * 100 + '%';
-        h.style.fontSize = (18 + Math.random() * 22) + 'px';
-        paper.appendChild(h);
-        setTimeout(() => h.remove(), 4000);
-      }
-
-      function setHeartSpeed(ms) {
-        if (heartsIntervalId) clearInterval(heartsIntervalId);
-        heartsIntervalId = setInterval(emitHeart, ms);
-        currentMs = ms;
-      }
-
-      setHeartSpeed(baseMs);
-
-      // Yazı ilerledikçe hız güncelle
-      const heartControl = setInterval(() => {
-        const shouldBoost = i >= boostAt;
-        const desired = shouldBoost ? boostedMs : baseMs;
-        if (desired !== currentMs) setHeartSpeed(desired);
-        if (i >= text.length) {
-          clearInterval(heartControl);
-        }
-      }, 200);
-    }
-
-    // Geri sayım bittikten sonra, kullanıcı giriş yaptıysa başlatmayı dener
-    setInterval(() => startFinalSequence(false), 1000);
-
-    function showFinal() {
-      document.body.insertAdjacentHTML('beforeend', `<div id="finalScreen">${finalSentence}</div>`);
-    }
-
-    /* ================= MINI SELF-CHECK (TEST) ================= */
-    // Konsolda hızlı kontrol için: sayfa açılınca temel fonksiyonlar var mı?
-    console.assert(typeof onEnter === 'function', 'onEnter tanımlı değil');
-    console.assert(typeof startFinalSequence === 'function', 'startFinalSequence tanımlı değil');
-    console.assert(typeof unlockAudio === 'function', 'unlockAudio tanımlı değil');
-  </script>
+function showFinal(){
+  const f=document.createElement('div');f.id='final';f.textContent=FINAL;document.body.appendChild(f);
+}
+</script>
 </body>
 </html>
